@@ -141,7 +141,14 @@ const Dashboard: React.FC<DashboardProps> = ({ results, onNavigate }) => {
           </h3>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%" minWidth={100} minHeight={100}>
-              <BarChart data={severityData} layout="vertical" onClick={(data) => data && data.activePayload && handleSeverityBarClick(data.activePayload[0].payload)}>
+              <BarChart
+                data={severityData}
+                layout="vertical"
+                onClick={(data) => {
+                  const payload = (data as { activePayload?: Array<{ payload: typeof severityData[number] }> } | null)?.activePayload?.[0]?.payload;
+                  if (payload) handleSeverityBarClick(payload);
+                }}
+              >
                 <CartesianGrid strokeDasharray="3 3" stroke="#334155" horizontal={true} vertical={false} />
                 <XAxis type="number" stroke="#94a3b8" hide />
                 <YAxis dataKey="name" type="category" stroke="#94a3b8" width={80} tick={{ fontSize: 12 }} />
