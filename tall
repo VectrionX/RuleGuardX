@@ -1,0 +1,201 @@
+[35mREADME.md[m[36m:[m[32m83[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mREADME.md[m[36m:[m[32m91[m[36m:[m[1;31m=======[m
+[35mREADME.md[m[36m:[m[32m92[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mcomponents/Dashboard.tsx[m[36m:[m[32m126[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mcomponents/Dashboard.tsx[m[36m:[m[32m143[m[36m:[m[1;31m=======[m
+[35mcomponents/Dashboard.tsx[m[36m:[m[32m153[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mcomponents/Layout.tsx[m[36m:[m[32m3[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mcomponents/Layout.tsx[m[36m:[m[32m5[m[36m:[m[1;31m=======[m
+[35mcomponents/Layout.tsx[m[36m:[m[32m24[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mcomponents/Layout.tsx[m[36m:[m[32m203[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mcomponents/Layout.tsx[m[36m:[m[32m240[m[36m:[m[1;31m=======[m
+[35mcomponents/Layout.tsx[m[36m:[m[32m272[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m196[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m200[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m204[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m209[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m211[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m213[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m283[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m287[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m291[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m298[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m300[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m302[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m825[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m829[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m830[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m841[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m845[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m849[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m880[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m884[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m888[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m900[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m904[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m908[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m920[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m924[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m928[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m940[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m944[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m948[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m960[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m964[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m968[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m980[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m984[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m988[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1000[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1004[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1008[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1013[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1017[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1018[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1026[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1030[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1034[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1039[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1043[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1044[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1052[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1056[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1060[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1065[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1069[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1070[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1078[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1082[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1086[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1091[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1095[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1096[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1104[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1108[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1112[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1117[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1121[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1122[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1130[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1134[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1138[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1143[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1147[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1148[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1156[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1160[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1164[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1169[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1173[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1174[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1182[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1186[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1190[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1195[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1199[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1200[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1208[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1212[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1216[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1221[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1225[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1226[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1234[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1238[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1242[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1247[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1251[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1252[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1260[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1264[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1268[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1273[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1277[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1278[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1286[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1290[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1294[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1299[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1303[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1304[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1312[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1316[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1320[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1325[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1329[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1330[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1338[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1342[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1346[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1358[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1362[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1366[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1378[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1382[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1386[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1398[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1402[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1406[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1418[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1422[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1426[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1438[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1442[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1446[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1585[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1589[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1593[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1628[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1632[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1636[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1647[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1651[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1655[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1673[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1679[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1685[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1695[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1699[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1703[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m1883[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m1887[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m1891[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m2009[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m2013[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m2017[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m2093[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m2097[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m2101[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m2118[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m2122[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m2126[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m2154[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m2158[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m2162[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m2180[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m2184[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m2188[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m2195[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m2199[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m2203[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m2210[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m2214[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m2218[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m2224[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m2232[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m2240[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m2329[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m2333[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m2337[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m2352[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m2378[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m2404[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m2425[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m2429[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m2433[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m2485[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m2489[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m2493[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)
+[35mpackage-lock.json[m[36m:[m[32m2553[m[36m:[m[1;31m<<<<<<<[m HEAD
+[35mpackage-lock.json[m[36m:[m[32m2557[m[36m:[m[1;31m=======[m
+[35mpackage-lock.json[m[36m:[m[32m2561[m[36m:[m[1;31m>>>>>>>[m 73c4524 (V2.1 updates)

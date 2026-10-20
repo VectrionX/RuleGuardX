@@ -1,92 +1,67 @@
+# RuleGuardX
 
-# RuleGuardX 🛡️
+RuleGuardX is a privacy-bounded, local-first firewall rules audit and risk analysis application. Ingest exported policy configurations, service objects, and network objects to inspect structural risk without network exposure or cloud dependencies.
 
-**RuleGuardX** is a high-performance, enterprise-grade offline firewall rules auditor. Designed for Network Security Architects and Blue-Team Automation Engineers, it evaluates firewall configuration exports (CSV) to identify misconfigurations, excessive exposure, and lateral-movement risks using specialized security logic.
+[![RuleGuardX Portal Screenshot](https://raw.githubusercontent.com/VectrionX/RuleGuardX/main/screenshot/Homeepage.png)](https://github.com/VectrionX/RuleGuardX/blob/main/screenshot/Homeepage.png)
 
----
+## What it reports
 
-## 🎯 Project Overview
-RuleGuardX provides a defensible risk assessment of firewall rules by correlating policy logic against real-world attack patterns. Unlike basic auditors, RuleGuardX performs context-aware evaluation of services, protocols, and network scopes.
+- High-risk and plaintext protocol exposure (RDP 3389, SSH 22, Telnet 23, FTP 21, SMB 445, etc.)
+- Permissive wildcard access (`ANY` source, destination, or port combinations)
+- Subnet blast radius and CIDR scope evaluations (`/8`, `/16`, or large network blocks)
+- Policy hygiene anomalies: shadowed rules (dead configurations), conflicting allow/deny logic, and latent risk in disabled rules
+- Dynamic object resolution for mapped service definitions and network CIDR definitions
+- Defensible risk scores (0–100) aligned with NIST SP 800-41, MITRE ATT&CK, CIS Controls, and Zero-Trust baselines
 
-### Core Analysis Capabilities:
-- **High-Risk Service Mapping:** Identifies exposure of administrative (RDP, SSH, WinRM) and weak (Telnet, FTP, SMB) protocols.
-- **Excessive Exposure Logic:** Specifically targets `ANY/ANY/ANY` rules and escalates severity based on destination sensitivity.
-- **Subnet Scope Analysis:** Numerically evaluates CIDR sizes (e.g., /8, /16 vs /24) to flag broad trust relationships.
-- **Policy Hygiene:** Detects shadowed rules, logic conflicts (Allow vs Deny), and latent risks in disabled policies.
-- **Correlation Engine:** Analyzes rules as a set to find overlapping or redundant controls.
+The application has no external network analysis path, cloud synchronization, or remote database. It does not communicate with firewall management planes or modify production configurations. All parsing, correlation, and scoring execute strictly inside the client browser.
 
----
+## Run locally
 
-## ⚠️ Hard Constraints & Security
-- **❌ No APIs / No Cloud:** All analysis is performed locally in your browser.
-- **❌ No Vendor Lock-in:** Agnostic CSV ingestion with dynamic field mapping.
-- **✅ Read-Only:** The tool analyzes policy exports only; it cannot make changes to your infrastructure.
-- **✅ Zero Data Leakage:** Your firewall configuration never leaves your machine.
+Requires Node.js 18+ and npm.
 
----
+```sh
+npm install
+npm run dev
+```
 
-## 📊 Risk Scoring Model
-RuleGuardX assigns a **Risk Score (0–100)** to every rule based on:
-- **Critical (100):** Internet-facing RDP/SSH, ANY/ANY Allow rules.
-- **High (80+):** Large subnet exposure, legacy plaintext protocols (Telnet/FTP).
-- **Medium (50-70):** Logical conflicts, broad internal-to-internal rules.
-- **Low/Info:** Technical debt, shadowed rules, and documentation gaps.
+Open the local Vite URL shown in the terminal. No API key or environment configuration is needed. All policy analysis runs client-side from the imported CSV files.
 
-*Logic derived from NIST SP 800-41, MITRE ATT&CK, and CIS Critical Security Controls.*
+## Quality checks
 
----
+```sh
+npm run build
+npm run preview
+```
 
-## 🚀 Getting Started
+The application compiles via Vite and TypeScript with strict typing. Deterministic correlation and CIDR parsing logic run in browser memory without persisting rule content.
 
-### Installation
-RuleGuardX is a standalone web application.
-1. Clone the repository.
-2. Open `index.html` in a modern browser (Chrome/Edge/Firefox).
-3. Alternatively, deploy the `dist` folder to any static hosting provider.
+## Safety and privacy
 
-### Usage
-1. **Export:** Export your firewall policy to CSV (compatible with Palo Alto, Fortinet, Cisco, Check Point, etc.).
-2. **Import:** Drag and drop the CSV into the **Import** tab.
-3. **Map:** Verify the column mappings (RuleGuardX auto-detects most standard headers).
-4. **Analyze:** Review the Dashboard for high-level risk metrics and drill down into the **Findings** tab for remediation guidance.
+Use sanitized policy exports where possible. The application intentionally does not upload, transmit, or synchronize firewall rules to any remote service. Configuration settings and custom port definitions are kept in browser `localStorage`. Treat generated scores and findings as analyst triage evidence. Never upload live credentials or unredacted confidential keys.
 
----
+## Repository hygiene
 
-## 📄 Output Artifacts
-The tool generates localized reports for audit documentation:
-- `firewall_findings.json`: Full technical breakdown of all risks.
-- `summary_report.txt`: High-level executive summary of the policy posture.
-- **Visual Charts:** Real-time generation of risk distribution and port exposure maps.
+Sensitive files are excluded via `.gitignore`. Policy samples used for evaluation should be sanitized of internal hostnames and confidential IP blocks. No malware or proprietary firewall keys are stored in this repository. See [SECURITY.md](./SECURITY.md) for reporting security issues.
 
----
+## Disclaimer
 
-## 🔗 Connect with the Developer
-- GitHub: [SuperMag99](https://github.com/SuperMag99)
+This project is provided "as is" without warranty. The authors are not responsible for misuse or damages. It is intended for defensive cybersecurity auditing and verification purposes only.
+
+## Security and vulnerabilities
+
+Refer to [SECURITY.md](./SECURITY.md) for security reporting and vulnerability information.
+
+## Project status
+
+Active client-side firewall policy auditor. Designed to run completely offline in zero-trust environments, isolated bastion workstations, or air-gapped security operations centers.
+
+## Support
+
+- Issues: [GitHub Issues](https://github.com/VectrionX/ruleguardx/issues)
+- Maintainer: [VectrionX](https://github.com/VectrionX/)
+- Website: [vectrionx.com](https://vectrionx.com/)
 - LinkedIn: [mag99](https://www.linkedin.com/in/mag99/)
 
----
+## License summary
 
-## ⚖️ License & Copyright
-Copyright (c) 2025 RuleGuardX.
-
-This project is licensed under the **MIT License**.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
----
-
-**Security & Ethics Notice:** This tool is intended for authorized security audits only. RuleGuardX performs offline analysis and does not interact with live network devices.
-<<<<<<< HEAD
-
----
-
-## 👤 Maintainer
-**SuperMag99**  
-🔗 GitHub: [SuperMag99](https://github.com/SuperMag99)  
-🔗 LinkedIn: [mag99](https://www.linkedin.com/in/mag99/)
-=======
->>>>>>> 73c4524 (V2.1 updates)
+This project is licensed under a Non-Commercial Attribution License. It is free for personal, educational, and research use; modifications and derivatives must credit the author; commercial use requires prior written permission; and it is provided without warranty. See [LICENSE](./LICENSE) for full details.

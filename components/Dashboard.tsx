@@ -123,24 +123,6 @@ const Dashboard: React.FC<DashboardProps> = ({ results, onNavigate }) => {
           </div>
           
           <div className="h-[300px] w-full">
-<<<<<<< HEAD
-            <ResponsiveContainer width="100%" height="100%" minWidth={100} minHeight={100}>
-              <BarChart
-                data={severityData}
-                layout="vertical"
-                onClick={(data) => {
-                  const payload = (data as { activePayload?: Array<{ payload: typeof severityData[number] }> } | null)?.activePayload?.[0]?.payload;
-                  if (payload) handleSeverityBarClick(payload);
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" stroke="#334155" horizontal={true} vertical={false} />
-                <XAxis type="number" stroke="#94a3b8" hide />
-                <YAxis dataKey="name" type="category" stroke="#94a3b8" width={80} tick={{ fontSize: 12 }} />
-                <Tooltip 
-                    cursor={{fill: '#1e293b', opacity: 0.4}}
-                    contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }}
-                    itemStyle={{ color: '#f1f5f9', fontSize: '12px' }}
-=======
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={severityData} barSize={36}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" vertical={false} />
@@ -150,7 +132,6 @@ const Dashboard: React.FC<DashboardProps> = ({ results, onNavigate }) => {
                   tick={{fill: '#94A3B8', fontSize: 12, fontWeight: 500}} 
                   axisLine={{stroke: '#334155'}} 
                   tickLine={false} 
->>>>>>> 73c4524 (V2.1 updates)
                 />
                 <YAxis 
                   stroke="#64748B" 
