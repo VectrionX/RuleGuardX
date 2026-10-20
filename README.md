@@ -1,9 +1,7 @@
+
 # RuleGuardX 🛡️
 
 **RuleGuardX** is a high-performance, enterprise-grade offline firewall rules auditor. Designed for Network Security Architects and Blue-Team Automation Engineers, it evaluates firewall configuration exports (CSV) to identify misconfigurations, excessive exposure, and lateral-movement risks using specialized security logic.
-
-![FootprintX Hero Screenshot](https://github.com/SuperMag99/RuleGuardX/blob/main/screenshot/1.png)
-![FootprintX Hero Screenshot](https://github.com/SuperMag99/RuleGuardX/blob/main/screenshot/2.png)
 
 ---
 
@@ -38,25 +36,13 @@ RuleGuardX assigns a **Risk Score (0–100)** to every rule based on:
 
 ---
 
-## 🚀 Quick Start & Installation
+## 🚀 Getting Started
 
-To get RuleGuardX running on your local machine, follow these steps (CMD or PowerShell):
-
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/SuperMag99/RuleGuardX.git
-   cd RuleGuardX
-   ```
-
-2. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Run the Application**:
-   ```bash
-   npm run dev
-   ```
+### Installation
+RuleGuardX is a standalone web application.
+1. Clone the repository.
+2. Open `index.html` in a modern browser (Chrome/Edge/Firefox).
+3. Alternatively, deploy the `dist` folder to any static hosting provider.
 
 ### Usage
 1. **Export:** Export your firewall policy to CSV (compatible with Palo Alto, Fortinet, Cisco, Check Point, etc.).
@@ -74,6 +60,12 @@ The tool generates localized reports for audit documentation:
 
 ---
 
+## 🔗 Connect with the Developer
+- GitHub: [SuperMag99](https://github.com/SuperMag99)
+- LinkedIn: [mag99](https://www.linkedin.com/in/mag99/)
+
+---
+
 ## ⚖️ License & Copyright
 Copyright (c) 2025 RuleGuardX.
 
@@ -88,6 +80,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ---
 
 **Security & Ethics Notice:** This tool is intended for authorized security audits only. RuleGuardX performs offline analysis and does not interact with live network devices.
+<<<<<<< HEAD
 
 ---
 
@@ -95,3 +88,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 **SuperMag99**  
 🔗 GitHub: [SuperMag99](https://github.com/SuperMag99)  
 🔗 LinkedIn: [mag99](https://www.linkedin.com/in/mag99/)
+=======
+>>>>>>> 73c4524 (V2.1 updates)

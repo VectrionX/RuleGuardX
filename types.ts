@@ -12,6 +12,25 @@ export interface InsecurePortSetting {
   enabled: boolean;
 }
 
+export interface InsecureServiceSetting {
+  name: string;
+  criticality: Severity;
+  enabled: boolean;
+}
+
+export interface ServiceObject {
+  name: string;
+  type: 'Single' | 'Group';
+  ports: (number | string)[];
+  raw: string;
+}
+
+export interface NetworkObject {
+  name: string;
+  type: string;
+  value: string;
+}
+
 export interface FirewallRule {
   id: string;
   name: string;
@@ -32,7 +51,7 @@ export interface FirewallRule {
 export interface AnalysisFinding {
   ruleId: string;
   ruleName: string;
-  category: 'Insecure Port' | 'Excessive Exposure' | 'Subnet Scope' | 'Protocol Risk' | 'Policy Hygiene' | 'Correlation Error';
+  category: 'Insecure Port' | 'Excessive Exposure' | 'Subnet Scope' | 'Protocol Risk' | 'Policy Hygiene' | 'Correlation Error' | 'Insecure Service Object';
   score: number;
   severity: Severity;
   explanation: string;
@@ -67,7 +86,7 @@ export interface FilterClause {
   field: FilterField;
   operator: FilterOperator;
   value: string;
-  logicalOperator: 'AND' | 'OR'; // New: per-clause logic
+  logicalOperator: 'AND' | 'OR';
 }
 
 export interface FilterState {

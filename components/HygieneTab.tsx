@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { AnalysisFinding } from '../types';
 import { Layers, AlertTriangle, ShieldX, Info, HelpCircle } from 'lucide-react';
@@ -8,86 +7,87 @@ interface HygieneTabProps {
 }
 
 const HYGIENE_DEFINITIONS = {
-  'Shadowed Rules': 'A redundancy issue where a rule is placed after another more general rule that already handles all its traffic. The "shadowed" rule is never executed, creating unnecessary technical debt.',
+  'Shadowed Rules': 'A redundancy issue where a rule is placed after another more general rule that already handles all its traffic. The shadowed rule is never reached by traffic, introducing dead security policy.',
   'Logic Conflicts': 'Ambiguity in policy enforcement where multiple rules overlap in criteria (source, destination, port) but specify different actions (Allow vs Deny). Device behavior becomes non-deterministic.',
-  'Latent Risk': 'Security exposure that is present but currently inactive, such as high-risk rules that are disabled. These represent a primary target for "Defense Evasion" techniques.',
-  'Policy Hygiene': 'Maintenance issues that don\'t break security but make the configuration harder to manage, such as redundant or empty rule definitions.',
-  'Correlation Error': 'Critical logical overlapping where the firewall cannot reliably determine which action to take, potentially leading to unauthorized "Allow" leaks.'
+  'Latent Risk': 'Security exposure that is present but currently inactive, such as high-risk rules that are disabled. These represent a primary target for defense evasion techniques.',
+  'Policy Hygiene': 'Maintenance issues that do not immediately break security but degrade rulebase maintainability, such as redundant or empty definitions.',
+  'Correlation Error': 'Critical logical overlapping where the firewall cannot reliably determine which action to take, potentially leading to unauthorized permit bypasses.'
 };
 
 const HygieneTab: React.FC<HygieneTabProps> = ({ hygiene }) => {
   return (
     <div className="space-y-6">
-      <div className="bg-slate-900 p-6 rounded-xl border border-slate-800 relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
-          <Layers className="w-24 h-24" />
+      <div className="bg-[#0D111A] p-6 rounded-xl border border-slate-800">
+        <div className="flex items-center gap-2.5 mb-1.5">
+          <Layers className="w-5 h-5 text-cyan-400" />
+          <h2 className="text-lg font-bold text-white tracking-tight">Policy Correlation & Hygiene Analysis</h2>
         </div>
-        <h2 className="text-xl font-bold mb-2 flex items-center gap-2 relative z-10">
-          <Layers className="w-6 h-6 text-indigo-400" /> Policy Correlation Analysis
-        </h2>
-        <p className="text-slate-400 text-sm relative z-10">Identifying shadowed, redundant, and conflicting firewall logic within the uploaded rule set.</p>
+        <p className="text-slate-400 text-xs leading-relaxed max-w-3xl">
+          Detection of shadowed, redundant, and conflicting firewall rules. Optimizing rule ordering reduces processing overhead and eliminates policy ambiguity.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <HygieneSummary 
            title="Shadowed Rules" 
            count={hygiene.filter(h => h.explanation.includes('Shadowed')).length}
            icon={Layers}
-           color="text-yellow-500"
+           badgeColor="text-amber-400 bg-amber-500/10 border-amber-500/20"
            description={HYGIENE_DEFINITIONS['Shadowed Rules']}
         />
         <HygieneSummary 
            title="Logic Conflicts" 
            count={hygiene.filter(h => h.category === 'Correlation Error').length}
            icon={ShieldX}
-           color="text-red-500"
+           badgeColor="text-rose-400 bg-rose-500/10 border-rose-500/20"
            description={HYGIENE_DEFINITIONS['Logic Conflicts']}
         />
         <HygieneSummary 
-           title="Latent Risk" 
+           title="Latent Disabled Risks" 
            count={hygiene.filter(h => h.explanation.includes('Disabled')).length}
            icon={AlertTriangle}
-           color="text-orange-500"
+           badgeColor="text-sky-400 bg-sky-500/10 border-sky-500/20"
            description={HYGIENE_DEFINITIONS['Latent Risk']}
         />
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {hygiene.length > 0 ? hygiene.map((h, i) => (
-          <div key={i} className="bg-slate-900 border border-slate-800 p-5 rounded-xl flex items-center gap-4 hover:border-slate-700 transition-colors group">
-            <div className={`p-3 rounded-lg bg-slate-800 ${h.category === 'Correlation Error' ? 'text-red-400' : 'text-slate-400'}`}>
-               <AlertTriangle className="w-6 h-6" />
+          <div key={i} className="bg-[#0D111A] border border-slate-800 p-5 rounded-xl flex flex-col md:flex-row items-start md:items-center gap-4 hover:border-slate-700 transition-colors">
+            <div className={`p-2.5 rounded-lg border ${
+              h.category === 'Correlation Error' 
+                ? 'bg-rose-500/10 border-rose-500/20 text-rose-400' 
+                : 'bg-slate-800/80 border-slate-700/60 text-slate-400'
+            }`}>
+               <AlertTriangle className="w-5 h-5" />
             </div>
-            <div className="flex-1">
-               <div className="flex items-center gap-3 mb-1">
-                 <div className="relative group/label">
-                    <span className="text-[10px] font-black uppercase tracking-widest bg-slate-800 px-2 py-0.5 rounded border border-slate-700 cursor-help flex items-center gap-1 hover:text-indigo-400 transition-colors">
-                      {h.category} <HelpCircle className="w-3 h-3 opacity-40" />
-                    </span>
-                    {/* Inline Badge Tooltip */}
-                    <div className="absolute bottom-full left-0 mb-2 w-48 bg-slate-950 border border-slate-800 p-2 rounded shadow-2xl opacity-0 translate-y-1 pointer-events-none group-hover/label:opacity-100 group-hover/label:translate-y-0 transition-all z-30">
-                       <p className="text-[9px] text-slate-300 font-medium leading-relaxed">
-                          {HYGIENE_DEFINITIONS[h.category as keyof typeof HYGIENE_DEFINITIONS] || 'General policy maintenance finding.'}
-                       </p>
-                    </div>
-                 </div>
-                 <span className="text-sm font-bold text-slate-100">{h.ruleName}</span>
-                 <span className="text-xs font-mono text-slate-500">ID: {h.ruleId}</span>
+
+            <div className="flex-1 space-y-1.5">
+               <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider bg-slate-800 px-2 py-0.5 rounded border border-slate-700 text-slate-300">
+                    {h.category}
+                  </span>
+                  <span className="text-slate-600">·</span>
+                  <span className="text-sm font-bold text-white">{h.ruleName}</span>
+                  <span className="text-slate-600">·</span>
+                  <span className="text-xs font-mono text-slate-400">Rule #{h.ruleId}</span>
                </div>
-               <p className="text-sm text-slate-400 leading-relaxed">{h.explanation}</p>
+               <p className="text-xs text-slate-300 leading-relaxed max-w-3xl">{h.explanation}</p>
             </div>
-            <div className="max-w-[250px] bg-slate-950/50 p-3 rounded-lg border border-slate-800 shadow-inner">
-               <div className="flex items-center gap-1.5 mb-1.5">
-                 <HelpCircle className="w-3 h-3 text-indigo-400" />
-                 <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Remediation Action</p>
+
+            <div className="w-full md:w-80 bg-slate-900/60 p-3 rounded-lg border border-slate-800/80 shrink-0">
+               <div className="flex items-center gap-1.5 mb-1 text-slate-300 text-[10px] font-semibold uppercase tracking-wider">
+                 <HelpCircle className="w-3 h-3 text-cyan-400" />
+                 <span>Remediation Advice</span>
                </div>
-               <p className="text-xs text-slate-300 italic leading-relaxed">{h.recommendation}</p>
+               <p className="text-xs text-slate-300 leading-relaxed font-sans">{h.recommendation}</p>
             </div>
           </div>
         )) : (
-          <div className="p-20 text-center text-slate-600 bg-slate-900/10 border-2 border-dashed border-slate-800 rounded-2xl">
-            <Layers className="w-12 h-12 mx-auto mb-4 opacity-10" />
-            <p className="text-lg">No hygiene issues detected. This policy shows clean correlation.</p>
+          <div className="p-16 text-center text-slate-500 bg-[#0D111A] border border-dashed border-slate-800 rounded-xl">
+            <Layers className="w-8 h-8 mx-auto mb-2 text-slate-600" />
+            <p className="text-sm font-semibold text-slate-300">No rule hygiene conflicts detected</p>
+            <p className="text-xs text-slate-500 mt-0.5">Policy demonstrates clean ordering and no shadowed directives</p>
           </div>
         )}
       </div>
@@ -95,30 +95,34 @@ const HygieneTab: React.FC<HygieneTabProps> = ({ hygiene }) => {
   );
 };
 
-const HygieneSummary = ({ title, count, icon: Icon, color, description }: { title: string, count: number, icon: any, color: string, description: string }) => (
-  <div className="group/card relative">
-    <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-800 hover:border-indigo-500/50 transition-all shadow-lg cursor-help h-full">
-      <div className="flex justify-between items-center mb-2">
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-bold text-slate-500 uppercase tracking-widest">{title}</span>
-          <Info className="w-3 h-3 text-slate-600 group-hover/card:text-indigo-400 transition-colors" />
+const HygieneSummary = ({ 
+  title, 
+  count, 
+  icon: Icon, 
+  badgeColor, 
+  description 
+}: { 
+  title: string; 
+  count: number; 
+  icon: any; 
+  badgeColor: string; 
+  description: string; 
+}) => (
+  <div className="bg-[#0D111A] p-5 rounded-xl border border-slate-800 flex flex-col justify-between">
+    <div className="flex justify-between items-start mb-3">
+      <div className="flex items-center gap-2">
+        <div className={`p-2 rounded-lg border ${badgeColor}`}>
+          <Icon className="w-4 h-4" />
         </div>
-        <Icon className={`w-5 h-5 ${color}`} />
+        <span className="text-xs font-bold text-slate-200 uppercase tracking-wider">{title}</span>
       </div>
-      <span className="text-4xl font-black text-white">{count}</span>
+      <span className="text-2xl font-bold font-mono text-white tabular-nums">{count}</span>
     </div>
-
-    {/* Floating Description */}
-    <div className="absolute top-full left-0 mt-3 w-full bg-slate-950 border border-slate-800 p-4 rounded-xl shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover/card:opacity-100 group-hover/card:translate-y-0 transition-all z-20 border-t-indigo-500 border-t-2">
-      <div className="flex items-start gap-3">
-        <Info className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
-        <p className="text-xs text-slate-300 leading-relaxed font-medium">
-          <span className="text-white font-bold block mb-1">Concept: {title}</span>
-          {description}
-        </p>
-      </div>
-    </div>
+    <p className="text-[11px] text-slate-400 leading-relaxed mt-1">
+      {description}
+    </p>
   </div>
 );
 
 export default HygieneTab;
+

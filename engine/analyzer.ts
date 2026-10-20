@@ -1,260 +1,282 @@
-import { FirewallRule, AnalysisFinding, Severity, AnalysisResults, InsecurePortSetting } from '../types';
 
-/**
- * SOC KNOWLEDGE BASE (OFFLINE)
- * Contains defensible risk explanations based on:
- * 1. MITRE ATT&CK Framework
- * 2. NIST SP 800-53 / 800-41
- * 3. CIS Critical Security Controls
- * 4. OWASP Top 10 / SANS Top 25
- * 5. CWE (Common Weakness Enumeration)
- */
+import { FirewallRule, AnalysisFinding, Severity, AnalysisResults, InsecurePortSetting, InsecureServiceSetting, ServiceObject, NetworkObject } from '../types';
+
 const SECURITY_KNOWLEDGE_BASE = {
   ANY_ANY: {
-    explanation: "Critical security control failure. Allowing 'ANY' source, destination, and service creates a 'Transparent Firewall' state. This violates NIST SP 800-53 AC-4 (Information Flow Enforcement) and is the primary vector for MITRE ATT&CK T1133 (External Remote Services). It provides zero resistance to automated reconnaissance and lateral movement.",
-    recommendation: "Immediate Remediation Required: Deconstruct the rule into specific micro-segments. Implement explicit 'Allow' lists (CIS Control 4.4) for known-good IP ranges and services only."
+    explanation: "Critical security control failure. Allowing 'ANY' source, destination, and service creates a 'Transparent Firewall' state. This violates NIST SP 800-53 AC-4.",
+    recommendation: "Immediate Remediation Required: Deconstruct the rule into specific explicit 'Allow' lists."
   },
   ANY_SOURCE: {
-    explanation: "Unrestricted Ingress Exposure. Source 'ANY' implies the rule is reachable from any point in the routed network (often the entire internet). According to SANS/CWE-284, improper access control leads to unauthorized access. This exposure is mapped to MITRE T1595 (Active Scanning) as it provides a target for global scanning botnets.",
-    recommendation: "Restrict the source to specific authorized CIDR blocks or Geofenced IP ranges. Implement MFA-backed VPN for remote access (NIST AC-17)."
+    explanation: "Unrestricted Ingress Exposure. Source 'ANY' implies the rule is reachable from any point in the routed network.",
+    recommendation: "Restrict the source to specific authorized CIDR blocks or Geofenced IP ranges."
   },
   ANY_DESTINATION: {
-    explanation: "Blast Radius Escalation. Destination 'ANY' permits traffic to potentially traverse into internal management subnets, sensitive database zones, or domain controllers. This bypasses the principle of 'Network Segmentation' (NIST SP 800-125B) and facilitates MITRE T1021 (Remote Services) lateral movement paths.",
-    recommendation: "Narrow the destination to the specific IP address or host group required. Audit destination zones to ensure traffic doesn't bridge high-trust and low-trust boundaries."
+    explanation: "Blast Radius Escalation. Destination 'ANY' permits traffic to traverse into sensitive internal zones, facilitating lateral movement.",
+    recommendation: "Narrow the destination to the specific IP address or host group required."
+  },
+  ANY_PORT: {
+    explanation: "Unrestricted Port Access (ANY). This rule allows all 65,535 ports, making the firewall effectively transparent for this traffic flow.",
+    recommendation: "Restrict the destination port to the specific service required for business operations."
   },
   LARGE_SUBNET: (size: number) => ({
-    explanation: `Excessive Blast Radius (/${size}). A network segment this large (/16 - /22) typically contains hundreds or thousands of hosts. In an enterprise environment, this broad trust relationship facilitates MITRE T1046 (Network Service Discovery) and massive lateral movement (T1021). Large subnets violate the Zero Trust Architecture (ZTA) principle defined in NIST SP 800-207.`,
-    recommendation: "Segment the network into smaller VLANs/Subnets (typically /24 or smaller). Use host-based firewalling or micro-segmentation to limit peer-to-peer communication within the subnet."
-  }),
-  PORT_SPECIFIC: {
-    21: "FTP: Legacy cleartext protocol. Susceptible to MITRE T1557.002 (Adversary-in-the-Middle) and CWE-319. Credentials and data are transmitted in plaintext, violating NIST SP 800-52 requirements for protecting sensitive information.",
-    23: "Telnet: Highly insecure administrative protocol. Replaced by SSH (NIST SP 800-53 IA-2). Plaintext transmission of management credentials allows easy interception via MITRE T1040 (Network Sniffing).",
-    445: "SMB/CIFS: Extremely high risk for lateral movement. Associated with MITRE T1021.002 and historic ransomware strains like WannaCry (EternalBlue). CIS Control 12 recommends blocking SMB at network boundaries to prevent NTLM relay attacks and remote file execution.",
-    3389: "RDP: Primary entry point for ransomware. Mapped to MITRE T1133. RDP exposure without NLA or MFA is a critical finding under CIS Control 4. Default configuration allows for brute-force attacks (T1110) and potential exploit of BlueKeep-style vulnerabilities.",
-    22: "SSH: While secure, direct internet exposure is discouraged by CIS Benchmark 1.1. Brute-force (T1110) is common. Should be restricted to Jump Hosts (Bastions) only.",
-    80: "HTTP: Unencrypted web traffic (CWE-319). Allows for session hijacking and credential theft (T1557). OWASP recommends enforcing HTTPS (TLS 1.2+) globally.",
-    3306: "MySQL: Database exposure. Facilitates MITRE T1190 (Exploit Public-Facing Application) and T1534 (Internal Spearphishing for DB access). Direct network access to databases should never cross security zones.",
-    1433: "MSSQL: High-value target for data exfiltration (MITRE T1020). Risk of SQL injection escalation if the listener is exposed to untrusted segments."
-  } as Record<number, string>,
-  HYGIENE: {
-    SHADOWING: {
-      explanation: "Rule Shadowing (NIST SP 800-41): A critical redundancy issue where a rule is entirely eclipsed by a preceding rule with identical or broader criteria. Shadowed rules are technically unreachable. Performance Impact: Every redundant rule increases the policy lookup latency (linear O(n) search), consuming CPU cycles and memory. Maintenance Impact: Shadowing creates 'Configuration Sprawl' and 'Technical Debt', making it difficult for auditors to determine the intended security posture and increasing the risk of accidental misconfiguration during policy updates.",
-      recommendation: "Policy De-duplication: Remove the shadowed rule. Consolidate overlapping rules into single entries using Object Groups (IP Sets/Service Groups) to maintain a lean, high-performance policy base (CIS Control 12)."
-    },
-    CONFLICT: {
-      explanation: "Policy Logic Conflict (Race Condition): Two rules cover the same traffic flow but mandate different actions (Permit vs Deny). While most firewalls use a 'First-Match' algorithm, conflicting rules indicate a lack of deterministic policy design. This ambiguity leads to 'Security Leakage' where a change in rule order accidentally grants unauthorized access. It violates the principle of 'Explicit Intent' and complicates incident response, forensic analysis, and compliance reporting.",
-      recommendation: "Standardize Policy Order: Place 'Deny' rules for specific subnets above 'Allow' rules for broader segments (Ordered Filtering). Use an explicit 'Deny All' (Default Deny) at the end of each zone pair to enforce strict boundary control."
-    },
-    LATENT_RISK: {
-      explanation: "Latent Exposure (Dormant High-Risk Rules): This rule is disabled but contains broad 'ANY' criteria or exposes administrative services. According to CIS Control 12, inactive rules should be purged periodically. Disabled rules are often 'temporarily' re-enabled during troubleshooting and forgotten, or leveraged by an adversary who has gained administrative control (MITRE T1562.001 - Impair Defenses) to quickly open backdoors without creating new rule logs.",
-      recommendation: "Purge Policy Debt: If a rule has been disabled for more than 90 days (NIST best practice), it should be permanently deleted. Maintain a 'Clean Configuration' to minimize the attack surface available for manipulation."
+    explanation: `Excessive Blast Radius (/${size}). This broad trust relationship facilitates Network Service Discovery and violates Zero Trust principles.`,
+    recommendation: "Segment the network into smaller subnets (typically /24 or smaller)."
+  })
+};
+
+const SERVICE_MAP: Record<string, number> = {
+  'ssh': 22, 'telnet': 23, 'http': 80, 'https': 443, 'ftp': 21, 'rdp': 3389,
+  'mysql': 3306, 'mssql': 1433, 'smb': 445, 'dns': 53, 'ntp': 123, 'snmp': 161,
+  'ldap': 389, 'ldaps': 636, 'smtp': 25, 'smtps': 465, 'imap': 143, 'imaps': 993,
+  'pop3': 110, 'pop3s': 995, 'vnc': 5900, 'winrm': 5985, 'winrm-s': 5986,
+  'oracle': 1521, 'mongodb': 27017, 'postgresql': 5432
+};
+
+const getCidrSize = (addr: string, networkObjectMap: Map<string, NetworkObject> = new Map()): number => {
+  if (!addr) return 32;
+  const parts = addr.split(/[,\s;]+/).filter(p => p.trim());
+  let smallestCidr = 32;
+
+  for (const part of parts) {
+    let clean = part.trim().toLowerCase();
+    
+    // Resolve network object if it exists
+    const netObj = networkObjectMap.get(clean);
+    if (netObj) {
+      // Recursively evaluate the resolved value in case it has multiple subnets
+      const resolvedSize = getCidrSize(netObj.value.toLowerCase(), networkObjectMap);
+      smallestCidr = Math.min(smallestCidr, resolvedSize);
+      continue;
     }
+
+    if (clean === 'any' || clean === '0.0.0.0/0') return 0; 
+    if (clean.includes('/')) {
+      const cidrPart = clean.split('/')[1];
+      const cidr = parseInt(cidrPart, 10);
+      if (!isNaN(cidr)) smallestCidr = Math.min(smallestCidr, cidr);
+    } 
   }
+  return smallestCidr;
 };
 
-const getCidrSize = (addr: string): number => {
-  const clean = addr.trim().toLowerCase();
-  if (clean === 'any' || clean === 'all' || clean === '0.0.0.0/0' || clean === '*') return 0;
-  if (clean.includes('/')) {
-    const parts = clean.split('/');
-    const cidr = parseInt(parts[1], 10);
-    return isNaN(cidr) ? 32 : cidr;
-  }
-  return 32;
-};
-
-const parsePorts = (portStr: string): number[] => {
-  if (!portStr) return [];
-  const clean = portStr.toString().trim().toLowerCase();
-  if (clean === 'any' || clean === 'all' || clean === '*' || clean === '0-65535') return [-1];
+/**
+ * Enhanced Precision Port Parser.
+ * Handles: 
+ * - tcp-80, udp-53 (Mixed)
+ * - 80,443,21 (Lists)
+ * - tcp-77-82 (Ranges with prefix)
+ * - 400-450 (Ranges)
+ */
+export const parsePortsAndServices = (portStr: string): (number | string)[] => {
+  if (portStr === undefined || portStr === null || portStr.toString().trim() === "") return [-1];
   
-  const parts = clean.split(/[,\s]+/);
-  const result: number[] = [];
+  const raw = portStr.toString().trim();
+  const clean = raw.toLowerCase();
+  
+  // Stricter wildcard detection: 'all' removed from here so it can be a Service Object
+  if (clean === 'any' || clean === '*') return [-1];
+  
+  const sanitized = raw.replace(/[\s;/]+/g, ',');
+  const parts = sanitized.split(',').filter(p => p.trim().length > 0);
+  const result = new Set<number | string>();
   
   parts.forEach(p => {
-    if (p.includes('-')) {
-      const [start, end] = p.split('-').map(x => parseInt(x.trim(), 10));
+    let token = p.toLowerCase().trim();
+
+    // 1. Handle Ranges with optional prefix (e.g. tcp-77-82 or 400-450)
+    const rangeMatch = token.match(/(?:[a-z]+-)?(\d+)-(\d+)$/i);
+    if (rangeMatch) {
+      const start = parseInt(rangeMatch[1], 10);
+      const end = parseInt(rangeMatch[2], 10);
       if (!isNaN(start) && !isNaN(end)) {
-        for (let i = start; i <= end; i++) result.push(i);
+        if (end - start > 500) {
+          result.add(-1); 
+        } else {
+          for (let i = start; i <= end; i++) result.add(i);
+        }
+        return;
       }
+    }
+
+    // 2. Handle Protocol Prefixed Single Ports (e.g. tcp-80)
+    const protoMatch = token.match(/^(?:tcp|udp|icmp|service)-(\d+)$/i);
+    if (protoMatch) {
+      result.add(parseInt(protoMatch[1], 10));
+      return;
+    }
+
+    // 3. Handle Service Names (e.g. ssh, http)
+    if (SERVICE_MAP[token]) {
+      result.add(SERVICE_MAP[token]);
+      return;
+    }
+
+    // 4. Handle Bare Numbers (e.g. 80)
+    const bareNum = parseInt(token, 10);
+    if (!isNaN(bareNum)) {
+      result.add(bareNum);
     } else {
-      const parsed = parseInt(p, 10);
-      if (!isNaN(parsed)) result.push(parsed);
+      // It's a named object (like "all" or "web_servers")
+      result.add(token);
     }
   });
   
-  return result;
+  return Array.from(result);
 };
 
-export const analyzeRules = (rules: FirewallRule[], portSettings: InsecurePortSetting[]): AnalysisResults => {
+export const analyzeRules = (
+  rules: FirewallRule[], 
+  portSettings: InsecurePortSetting[],
+  serviceSettings: InsecureServiceSetting[] = [],
+  serviceObjectMap: Map<string, ServiceObject> = new Map(),
+  networkObjectMap: Map<string, NetworkObject> = new Map()
+): AnalysisResults => {
   const findings: AnalysisFinding[] = [];
   const hygiene: AnalysisFinding[] = [];
 
   const activeInsecurePorts = new Map<number, InsecurePortSetting>();
   portSettings.filter(s => s.enabled).forEach(s => activeInsecurePorts.set(s.port, s));
 
-  rules.forEach((rule, index) => {
-    const ports = parsePorts(rule.destinationPort);
-    const srcCidr = getCidrSize(rule.source);
-    const dstCidr = getCidrSize(rule.destination);
-    const isAllow = rule.action === 'ALLOW';
-    const hasAnyPort = ports.includes(-1);
+  const activeInsecureServices = new Map<string, InsecureServiceSetting>();
+  serviceSettings.filter(s => s.enabled).forEach(s => activeInsecureServices.set(s.name.toLowerCase(), s));
 
-    // 1. ANY Rule Logic (Nuanced Severity)
+  rules.forEach((rule, index) => {
+    const isAllow = rule.action === 'ALLOW';
+    if (!isAllow) return;
+
+    const mixedPorts = parsePortsAndServices(rule.destinationPort);
+    const srcCidr = getCidrSize(rule.source, networkObjectMap);
+    const dstCidr = getCidrSize(rule.destination, networkObjectMap);
+    const hasAnyPort = mixedPorts.includes(-1);
+
     const isAnySource = srcCidr === 0;
     const isAnyDest = dstCidr === 0;
-    const isAnyProto = rule.protocol === 'ANY';
 
-    if (isAllow && (isAnySource || isAnyDest || isAnyProto || hasAnyPort)) {
-      let explanation = "";
-      let recommendation = "";
-      let severity: Severity = 'MEDIUM';
-      let score = 50;
-
-      const anyDimensions = (isAnySource ? 1 : 0) + (isAnyDest ? 1 : 0) + (hasAnyPort ? 1 : 0) + (isAnyProto ? 0.5 : 0);
-      
-      if (anyDimensions >= 3) {
-        severity = 'CRITICAL';
-        score = 100;
-        explanation = SECURITY_KNOWLEDGE_BASE.ANY_ANY.explanation;
-        recommendation = SECURITY_KNOWLEDGE_BASE.ANY_ANY.recommendation;
-      } else if (isAnySource) {
-        severity = 'HIGH';
-        score = 85;
-        explanation = SECURITY_KNOWLEDGE_BASE.ANY_SOURCE.explanation;
-        recommendation = SECURITY_KNOWLEDGE_BASE.ANY_SOURCE.recommendation;
-      } else if (isAnyDest) {
-        severity = 'HIGH';
-        score = 80;
-        explanation = SECURITY_KNOWLEDGE_BASE.ANY_DESTINATION.explanation;
-        recommendation = SECURITY_KNOWLEDGE_BASE.ANY_DESTINATION.recommendation;
-      } else {
-        severity = 'MEDIUM';
-        score = 60;
-        explanation = `Broad protocol or port access ('ANY') detected. This increases the attack surface for specialized payloads and facilitates T1046 (Network Service Discovery).`;
-        recommendation = "Restrict the rule to only the required ports and protocols (CIS Control 4.4).";
-      }
-
-      findings.push({
-        ruleId: rule.id,
-        ruleName: rule.name,
-        category: 'Excessive Exposure',
-        score: score,
-        severity: severity,
-        explanation,
-        recommendation
+    // --- 1. GLOBAL EXPOSURE ---
+    if (hasAnyPort) {
+      findings.push({ 
+        ruleId: rule.id, ruleName: rule.name, category: 'Excessive Exposure', score: 85, severity: 'HIGH',
+        explanation: SECURITY_KNOWLEDGE_BASE.ANY_PORT.explanation,
+        recommendation: SECURITY_KNOWLEDGE_BASE.ANY_PORT.recommendation
       });
     }
 
-    // 2. Subnet Scope Analysis (Numerical)
-    if (isAllow) {
-      if (srcCidr <= 16 && srcCidr > 0) {
-        const kb = SECURITY_KNOWLEDGE_BASE.LARGE_SUBNET(srcCidr);
-        findings.push({
-          ruleId: rule.id,
-          ruleName: rule.name,
-          category: 'Subnet Scope',
-          score: 80,
-          severity: srcCidr <= 8 ? 'CRITICAL' : 'HIGH',
-          explanation: kb.explanation,
-          recommendation: kb.recommendation
+    if (isAnySource || isAnyDest) {
+      const anyDimensions = (isAnySource ? 1 : 0) + (isAnyDest ? 1 : 0) + (hasAnyPort ? 1 : 0);
+      if (anyDimensions >= 3) {
+        findings.push({ 
+          ruleId: rule.id, ruleName: rule.name, category: 'Excessive Exposure', score: 100, severity: 'CRITICAL',
+          explanation: SECURITY_KNOWLEDGE_BASE.ANY_ANY.explanation, recommendation: SECURITY_KNOWLEDGE_BASE.ANY_ANY.recommendation 
         });
-      } else if (srcCidr >= 17 && srcCidr <= 22) {
-        const kb = SECURITY_KNOWLEDGE_BASE.LARGE_SUBNET(srcCidr);
-        findings.push({
-          ruleId: rule.id,
-          ruleName: rule.name,
-          category: 'Subnet Scope',
-          score: 60,
-          severity: 'HIGH',
-          explanation: kb.explanation,
-          recommendation: kb.recommendation
+      } else if (isAnySource) {
+        findings.push({ 
+          ruleId: rule.id, ruleName: rule.name, category: 'Excessive Exposure', score: 85, severity: 'HIGH',
+          explanation: SECURITY_KNOWLEDGE_BASE.ANY_SOURCE.explanation, recommendation: SECURITY_KNOWLEDGE_BASE.ANY_SOURCE.recommendation 
+        });
+      } else if (isAnyDest) {
+        findings.push({ 
+          ruleId: rule.id, ruleName: rule.name, category: 'Excessive Exposure', score: 80, severity: 'HIGH',
+          explanation: SECURITY_KNOWLEDGE_BASE.ANY_DESTINATION.explanation, recommendation: SECURITY_KNOWLEDGE_BASE.ANY_DESTINATION.recommendation 
         });
       }
     }
 
-    // 3. Insecure Ports (Strict Mapping)
-    if (isAllow) {
-      ports.forEach(p => {
-        if (p === -1) return;
-        const setting = activeInsecurePorts.get(p);
+    // --- 2. SUBNET SCOPE ---
+    if (srcCidr > 0 && srcCidr <= 16) {
+      const kb = SECURITY_KNOWLEDGE_BASE.LARGE_SUBNET(srcCidr);
+      findings.push({ 
+        ruleId: rule.id, ruleName: rule.name, category: 'Subnet Scope', score: srcCidr <= 8 ? 100 : 80, 
+        severity: srcCidr <= 8 ? 'CRITICAL' : 'HIGH', explanation: `Source ${kb.explanation}`, recommendation: kb.recommendation 
+      });
+    }
+    if (dstCidr > 0 && dstCidr <= 16) {
+      const kb = SECURITY_KNOWLEDGE_BASE.LARGE_SUBNET(dstCidr);
+      findings.push({ 
+        ruleId: rule.id, ruleName: rule.name, category: 'Subnet Scope', score: dstCidr <= 8 ? 100 : 80, 
+        severity: dstCidr <= 8 ? 'CRITICAL' : 'HIGH', explanation: `Destination ${kb.explanation}`, recommendation: kb.recommendation 
+      });
+    }
+
+    // --- 3. INSECURE PORTS & SERVICE OBJECTS ---
+    const checkItem = (item: number | string, context: string) => {
+      if (typeof item === 'number') {
+        if (item === -1) return;
+        const setting = activeInsecurePorts.get(item);
         if (setting) {
-          const detailedRisk = SECURITY_KNOWLEDGE_BASE.PORT_SPECIFIC[p] || `Protocol/Port ${p} is flagged as insecure or high-risk for enterprise environments. Access to this port increases the threat profile of the host and facilitates potential MITRE ATT&CK techniques.`;
-          
           findings.push({
-            ruleId: rule.id,
-            ruleName: rule.name,
-            category: 'Insecure Port',
-            score: setting.criticality === 'CRITICAL' ? 100 : setting.criticality === 'HIGH' ? 90 : 60,
+            ruleId: rule.id, ruleName: rule.name, category: 'Insecure Port',
+            score: setting.criticality === 'CRITICAL' ? 100 : 90,
             severity: setting.criticality,
-            explanation: `Service Identity: ${setting.label} (Port ${p}). ${detailedRisk} Reference: ${setting.whyInsecure}.`,
-            recommendation: `Transition to secure alternatives (e.g., replace FTP with SFTP, Telnet with SSH). If the service is required, restrict access to a specific 'Trusted Admin' subnet and implement deep packet inspection (DPI).`
+            explanation: `Rule allows ${setting.label} (Port ${item}) ${context}. Inherently insecure protocol.`,
+            recommendation: `Transition to encrypted alternatives (SSH, HTTPS).`
           });
         }
-      });
-    }
+      } else {
+        const itemLower = item.toLowerCase();
+        
+        // Check 1: Explicitly flagged in settings
+        const setting = activeInsecureServices.get(itemLower);
+        if (setting) {
+          findings.push({
+            ruleId: rule.id, ruleName: rule.name, category: 'Insecure Service Object',
+            score: 90, severity: setting.criticality,
+            explanation: `Rule uses object '${item}', which is explicitly flagged as insecure in settings.`,
+            recommendation: `Restrict or decommission this service object.`
+          });
+        }
 
-    // 4. Policy Hygiene & Correlation (Set Analysis)
-    const shadowedBy = rules.slice(0, index).find(prev => 
-      prev.enabled &&
-      prev.action === rule.action &&
-      (prev.source === rule.source || prev.source.toLowerCase() === 'any') &&
-      (prev.destination === rule.destination || prev.destination.toLowerCase() === 'any') &&
-      (prev.protocol === rule.protocol || prev.protocol === 'ANY') &&
-      (prev.destinationPort === rule.destinationPort || prev.destinationPort.toLowerCase() === 'any')
-    );
-
-    if (shadowedBy && rule.enabled) {
-      hygiene.push({
-        ruleId: rule.id,
-        ruleName: rule.name,
-        category: 'Policy Hygiene',
-        score: 20,
-        severity: 'INFORMATIONAL',
-        explanation: `${SECURITY_KNOWLEDGE_BASE.HYGIENE.SHADOWING.explanation} This specific rule is eclipsed by Rule ID: ${shadowedBy.id}.`,
-        recommendation: SECURITY_KNOWLEDGE_BASE.HYGIENE.SHADOWING.recommendation
-      });
-    }
-
-    const conflicting = rules.slice(0, index).find(prev => 
-      prev.enabled &&
-      prev.action !== rule.action &&
-      prev.source === rule.source &&
-      prev.destination === rule.destination &&
-      prev.destinationPort === rule.destinationPort
-    );
-
-    if (conflicting && rule.enabled) {
-      hygiene.push({
-        ruleId: rule.id,
-        ruleName: rule.name,
-        category: 'Correlation Error',
-        score: 50,
-        severity: 'MEDIUM',
-        explanation: `${SECURITY_KNOWLEDGE_BASE.HYGIENE.CONFLICT.explanation} A direct action conflict exists with Rule ID: ${conflicting.id}.`,
-        recommendation: SECURITY_KNOWLEDGE_BASE.HYGIENE.CONFLICT.recommendation
-      });
-    }
-
-    if (!rule.enabled && isAllow) {
-      if (srcCidr === 0 || hasAnyPort) {
-        hygiene.push({
-          ruleId: rule.id,
-          ruleName: rule.name,
-          category: 'Policy Hygiene',
-          score: 40,
-          severity: 'LOW',
-          explanation: SECURITY_KNOWLEDGE_BASE.HYGIENE.LATENT_RISK.explanation,
-          recommendation: SECURITY_KNOWLEDGE_BASE.HYGIENE.LATENT_RISK.recommendation
-        });
+        // Check 2: Recursive Deep Search (Inside Service Objects CSV)
+        const dynamicObj = serviceObjectMap.get(itemLower);
+        if (dynamicObj) {
+          dynamicObj.ports.forEach(p => {
+            if (typeof p === 'number') {
+              const pSetting = activeInsecurePorts.get(p);
+              if (pSetting) {
+                findings.push({
+                  ruleId: rule.id, ruleName: rule.name, category: 'Insecure Service Object',
+                  score: 95, severity: pSetting.criticality,
+                  explanation: `Object '${item}' contains insecure port ${p} (${pSetting.label}).`,
+                  recommendation: `Remove insecure port ${p} from the service object '${item}' definition.`
+                });
+              }
+            }
+          });
+        }
       }
+    };
+
+    mixedPorts.forEach(item => checkItem(item, "via port definition"));
+    
+    if (rule.service) {
+       const serviceTokens = rule.service.split(/[,\s;]+/).filter(t => t.trim());
+       serviceTokens.forEach(t => {
+         const parsed = parsePortsAndServices(t);
+         parsed.forEach(pt => checkItem(pt, `via service object '${t}'`));
+       });
+    }
+  });
+
+  // Policy Hygiene Check
+  rules.forEach((rule, index) => {
+    if (!rule.enabled) return;
+    const shadowedBy = rules.slice(0, index).find(prev => 
+      prev.enabled && prev.action === rule.action &&
+      (prev.source.toLowerCase() === 'any' || prev.source === rule.source) &&
+      (prev.destination.toLowerCase() === 'any' || prev.destination === rule.destination) &&
+      (prev.protocol.toLowerCase() === 'any' || prev.protocol === rule.protocol) &&
+      (prev.destinationPort.toLowerCase() === 'any' || prev.destinationPort === rule.destinationPort)
+    );
+    if (shadowedBy) {
+      hygiene.push({
+        ruleId: rule.id, ruleName: rule.name, category: 'Policy Hygiene', score: 20, severity: 'INFORMATIONAL',
+        explanation: `Rule is shadowed by ID ${shadowedBy.id}.`,
+        recommendation: "Remove redundant entry to reduce policy complexity."
+      });
     }
   });
 
   return {
-    rules,
-    findings,
-    hygiene,
+    rules, findings, hygiene,
     summary: {
       totalRules: rules.length,
       enabledRules: rules.filter(r => r.enabled).length,

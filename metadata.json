@@ -1,5 +1,6 @@
 {
   "name": "RuleGuardX",
   "description": "An offline firewall rules auditor that evaluates risks, exposure, and hygiene using enterprise security logic.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": []
 }
