@@ -35,6 +35,8 @@ npm run preview
 
 The application compiles via Vite and TypeScript with strict typing. Deterministic correlation and CIDR parsing logic run in browser memory without persisting rule content.
 
+**For testing the output for this tool i have uploaded a sample test CSV file so you can see the results: RuleGuardX_test_firewall_rules_1500.csv
+
 ## Safety and privacy
 
 Use sanitized policy exports where possible. The application intentionally does not upload, transmit, or synchronize firewall rules to any remote service. Configuration settings and custom port definitions are kept in browser `localStorage`. Treat generated scores and findings as analyst triage evidence. Never upload live credentials or unredacted confidential keys.
